@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import { RadioGroup } from "@headlessui/react";
+import { useEffect } from "react";
+
+import PaymentModal from "./components/PaymentModal";
 
 const product = {
   name: "Basic Tee 6-Pack",
-  price: "$192",
+  price: "$20",
   href: "#",
   breadcrumbs: [
     { id: 1, name: "Men", href: "#" },
@@ -60,12 +63,38 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function App() {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
+  const [showModal, setShowModal] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(null);
+
+  const onShowModal = (show) => {
+    setShowModal(show);
+  };
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+
+    if (query.get("success")) {
+      setPaymentStatus(true);
+      setShowModal(true);
+    }
+
+    if (query.get("failed")) {
+      setPaymentStatus(false);
+      setShowModal(true);
+    }
+  }, []);
+
   return (
     <div className="bg-white">
+      <PaymentModal
+        open={showModal}
+        setOpen={onShowModal}
+        status={paymentStatus}
+      />
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol
@@ -306,12 +335,14 @@ export default function Example() {
                 </RadioGroup>
               </div>
 
-              <a
-                href="#"
-                className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Checkout
-              </a>
+              <form action="/create-checkout-session" method="POST">
+                <button
+                  type="submit"
+                  className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Checkout
+                </button>
+              </form>
             </form>
           </div>
 
