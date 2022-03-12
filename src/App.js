@@ -4,7 +4,7 @@ import { RadioGroup } from "@headlessui/react";
 
 const product = {
   name: "Basic Tee 6-Pack",
-  price: "$192",
+  price: "$20",
   href: "#",
   breadcrumbs: [
     { id: 1, name: "Men", href: "#" },
@@ -307,7 +307,7 @@ export default function Example() {
               </div>
 
               <a
-                href="#"
+                href="https://buy.stripe.com/test_aEUcPRegZ0jg0rS9AA"
                 className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Checkout
